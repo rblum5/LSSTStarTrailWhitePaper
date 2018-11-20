@@ -1,0 +1,9 @@
+template.aux
+template.fdb_latexmk
+template.out
+template.blg
+template.log
+notebooks/
+template.bbl
+template.fls
+template.synctex.gz
