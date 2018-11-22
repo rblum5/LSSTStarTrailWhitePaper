@@ -27,9 +27,9 @@
 
 \maketitle
 
-% \begin{abstract}
-% Please provide a short summary of your scientific goals and survey strategy modifications here.
-% \end{abstract}
+\begin{abstract}
+We present a unique method that allows the LSST to scan the sky for subsecond stellar variability. The method has operational and image processing components. The operational component is to take star trail images, which facilitate sub-exposure photometry. The image processing component is to use deep learning to sift for transient events on timescales down to 10 ms. We advocate for coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue to produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
+\end{abstract}
 
 \section{White Paper Information}
 The corresponding author is David Thomas (dthomas5@stanford.edu).
@@ -40,7 +40,7 @@ The corresponding author is David Thomas (dthomas5@stanford.edu).
 \item {\bf Survey Type Category:} We propose inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
 
 \item {\bf Observing Strategy Category:}
-While different fields are conducive to different aspects of our method - for example, searching open clusters for flare stars - it is largely agnostic of where the telescope is pointed. Our proposal can be trivially interleaved with the existing LSST survey.
+While different fields are conducive to different aspects of our method - for example, searching open clusters for flare stars - it is largely agnostic of where the telescope is pointed. Furthermore, our proposal can be trivially interleaved with the main LSST survey.
 
 \end{enumerate}  
 
@@ -68,7 +68,7 @@ We assess the performance of our technique on visits and corresponding images th
 \\
 
 {\color{green}
-\noindent AGN\\
+\noindent AGN/Blazars\\
 Stellar Flares\\
 Exoplanets\\
 Gamma-Ray Bursts\\
@@ -116,14 +116,68 @@ Conclusion.
 % constraints are not relevant or important for your science goals.}
 % \end{footnotesize}
 
-% \subsection{High-level description}
-% \begin{footnotesize}
-% {\it Describe or illustrate your ideal sequence of observations.}
-% \end{footnotesize}
+% \subsection{Overview}
 
-% Sequences of observations. Processing them with deep learning.
+% The crux of our proposal is taking star trail exposures where the tracking is turned off. The slow rotation of the Earth during the image with respect to the sky we image, produces star trail images. While these images have been employed for site-testing, during the early days of CCDs, and for popular science images that can be found by a Google search - they have not yet been employed at the scale we are proposing. We have a gradual process to validate that this method can deliver on the science we aspire to.
 
-% Early days of technique. Keeps getting a lot better.
+% We have demonstrated that in a wide variety of high fidelity simulated images our method can effectively detect variability. The next step is to test it on real data. We have proposed to do this and will be taking a half-nights worth of data on DECam in the second half of 2019. This will help us adress many problems.
+
+% The next stage of testing will take place during comissioning. Through private communication with Steven Kahn and Chuck Claver, we know that there will be ample opportunity to take these images. This data will allow us to further iterate. 
+
+% While perhaps this has been done to make popular star trail images, it has never been done at the scale we are proposing. 
+
+% There are three modes of operation:
+
+% Strong Signal-to-Noise:
+
+% High duty cycle:
+
+% Strategic Rotations:
+
+
+% \subsection{Constraints}
+
+% \begin{itemize}
+% \item \textbf{Footprint.} We have not yet developed a footprint optimized for the explorations made possible by star trail images. We plan to continue evaluating specific use cases and aim to provide comprehensive footprint guideance by Summer 2019. We expect the following details to be relevant. The length $l$ of a star trail depends on the declination $\delta$, $l = 1071 \cdot \cos(\delta)$ pixels for the LSST. Star trail data complements existing surveys, including some in other regions of the electromagnetic spectrum. These considerations will likely provide weak constraints on the optimal footprint. 
+
+% \item \textbf{Image Quality.} 
+
+% \item \textbf{Sky Brightness.}
+
+% \item \textbf{Total Number of Visits.}
+
+% \item \textbf{Number of Visits Within Night.}
+
+% \item \textbf{Distribution of Visits Over Time.}
+
+% \item \textbf{Filter Choice.}
+
+% \item \textbf{Exposure Constraints.}
+
+% \end{itemize}
+
+% \begin{table}[ht]
+%     \centering
+%     \begin{tabular}{l|l|l|l}
+%         \toprule
+%         Properties & Importance \hspace{.3in} \\
+%         \midrule
+%         Image quality & 2\\
+%         Sky brightness & 1\\
+%         Individual image depth & 3\\
+%         Co-added image depth & 3\\
+%         Number of exposures in a visit & 3\\
+%         Number of visits (in a night) & 3\\ 
+%         Total number of visits & 1\\
+%         Time between visits (in a night) & 3\\
+%         Time between visits (between nights)  & 3\\
+%         Long-term gaps between visits & 3\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{{\bf Constraint Rankings:} Summary of the relative importance of various survey strategy constraints. Please rank the importance of each of these considerations, from 1=very important, 2=somewhat important, 3=not important. If a given constraint depends on other parameters in the table, but these other parameters are not important in themselves, please only mark the final constraint as important. For example, individual image depth depends on image quality, sky brightness, and number of exposures in a visit; if your science depends on the individual image depth but not directly on the other parameters, individual image depth would be `1' and the other parameters could be marked as `3', giving us the most flexibility when determining the composition of a visit, for example.}
+%         \label{tab:obs_constraints}
+% \end{table}
+
 
 % \vspace{.3in}
 
@@ -133,8 +187,12 @@ Conclusion.
 % are no specific constraints on the pointings (e.g. stellar density, galactic dust extinction).}
 % \end{footnotesize}
 
+% We have not yet constrainted this.
+
 % \subsection{Image quality}
 % \begin{footnotesize}{\it Constraints on the image quality (seeing).}\end{footnotesize}
+
+% We are sensitive to widening of the trail in the transverse direction, we are not too sensitive.
 
 % \subsection{Individual image depth and/or sky brightness}
 % \begin{footnotesize}{\it Constraints on the sky brightness in each image and/or individual image depth for point sources.
@@ -142,11 +200,15 @@ Conclusion.
 % calculated for point sources). Please provide sky brightness or image depth constraints per filter.}
 % \end{footnotesize}
 
+% Sky brightness is an issue and image depth is not a concern because we do not coadd.
+
 % \subsection{Co-added image depth and/or total number of visits}
 % \begin{footnotesize}{\it  Constraints on the total co-added depth and/or total number of visits.
 % Please differentiate between motivations for a given co-added depth and total number of visits. 
 % Please provide desired co-added depth and/or total number of visits per filter, if relevant.}
 % \end{footnotesize}
+
+% What we care about
 
 % \subsection{Number of visits within a night}
 % \begin{footnotesize}{\it Constraints on the number of exposures (or visits) in a night, especially if considering sequences of visits.  }
@@ -183,28 +245,7 @@ Conclusion.
 
 % \vspace{.3in}
 
-% \begin{table}[ht]
-%     \centering
-%     \begin{tabular}{l|l|l|l}
-%         \toprule
-%         Properties & Importance \hspace{.3in} \\
-%         \midrule
-%         Image quality &     \\
-%         Sky brightness &  \\
-%         Individual image depth &   \\
-%         Co-added image depth &   \\
-%         Number of exposures in a visit   &   \\
-%         Number of visits (in a night)  &   \\ 
-%         Total number of visits &   \\
-%         Time between visits (in a night) &  \\
-%         Time between visits (between nights)  &   \\
-%         Long-term gaps between visits & \\
-%         Other (please add other constraints as needed) & \\
-%         \bottomrule
-%     \end{tabular}
-%     \caption{{\bf Constraint Rankings:} Summary of the relative importance of various survey strategy constraints. Please rank the importance of each of these considerations, from 1=very important, 2=somewhat important, 3=not important. If a given constraint depends on other parameters in the table, but these other parameters are not important in themselves, please only mark the final constraint as important. For example, individual image depth depends on image quality, sky brightness, and number of exposures in a visit; if your science depends on the individual image depth but not directly on the other parameters, individual image depth would be `1' and the other parameters could be marked as `3', giving us the most flexibility when determining the composition of a visit, for example.}
-%         \label{tab:obs_constraints}
-% \end{table}
+
 
 % \subsection{Technical trades}
 % \begin{footnotesize}
@@ -238,10 +279,6 @@ Conclusion.
 % {\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved. Simon Krughoff}
 % \end{footnotesize}
 
-% \section{Acknowledgements}
-%  \begin{footnotesize}
-%  {\it If you have any special acknowledgements of support for the preparation of this white paper, please feel free to use this section. If not, feel free to comment out.}
-%  \end{footnotesize}
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
