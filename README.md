@@ -5,7 +5,7 @@ We are preparing a [LSST Cadence Optimization White Paper](https://www.google.co
 | Topic | Committed Expert | Candidates |
 |---|---|---|
 |AGN/Blazars| Claudia Raiteri | Krista Lynne Smith|
-|Stellar Flars| |Željko Ivezić, Mario Zurić, Joachim Moeyens, David Thomas|
+|Stars/Stellar Flars| |Željko Ivezić, Mario Zurić, Joachim Moeyens, Lynne Jones, David Thomas|
 |Exoplanets| | Samantha Thrush, Nick Mondrik| 
 |Gamma-ray Bursts | | Josh Bloom |
 |Kiuper Belt Objects | | Federica Bianco, David Thomas |
@@ -14,12 +14,12 @@ We are preparing a [LSST Cadence Optimization White Paper](https://www.google.co
 
 We will also be reaching out to individuals with expertise in domains that are relevant to this work.
 
-| Topic | Committed Expert | Candidates |
-|---|---|---|
-|NCSA + LSST Special Programs| |M. L. Graham, Simon Krughoff, Eric Bellm|
-|CatSim, PhoSim| |Colin Burke, John Peterson, Scott Daniels|
-|Star Trails| | Steve Howell, George Jacoby|
-|Operations| |Robert Blum|
+| Topic | Candidates |
+|---|---|
+|NCSA + LSST Special Programs| M. L. Graham, Simon Krughoff, Eric Bellm|
+|CatSim, PhoSim| Colin Burke, John Peterson, Scott Daniels|
+|Star Trails| Steve Howell, George Jacoby|
+|Operations| Robert Blum|
 
 We also encourage those who are generally interested in this technique to get invovled (please email dthomas5[at]stanford.edu and we will get you on the author list). Not only will it be exciting to complete this proposal, but there are many areas we can investigate together moving forward.
 
@@ -29,4 +29,5 @@ We also encourage those who are generally interested in this technique to get in
 - Steven Kahn
 - Federica Bianco
 - Andrea Possenti
+- Claudia Raiteri
 - *More Welcome*
