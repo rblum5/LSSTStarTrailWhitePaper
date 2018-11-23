@@ -28,14 +28,14 @@
 \maketitle
 
 \begin{abstract}
-We present a unique method that allows the LSST to scan the sky for subsecond stellar variability. The method has operational and image processing components. The operational component is to take star trail images, which facilitate sub-exposure photometry. The image processing component is to use deep learning to sift for transient events on timescales down to 10 ms. We advocate for coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue to produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
+We present a unique method that allows the LSST to scan the sky for subsecond stellar variability. The method has operational and image processing components. The operational component is to take star trail images, which facilitate subexposure photometry. The image processing component is to use deep learning to sift for transient events on timescales down to 10 ms. We advocate for coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue to produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
 \end{abstract}
 
 \section{White Paper Information}
 The corresponding author is David Thomas (dthomas5@stanford.edu).
 
 \begin{enumerate} 
-\item {\bf Science Category:} We introduce a mechanism that enables the LSST to provide new data with much higher time resolution that not only enhances existing investigations, but allows LSST to contribute to new science use cases that generally lie within the \textit{Exploring the Changing Sky} and \textit{Milky Way Structure and Formation} categories.
+\item {\bf Science Category:} We introduce a mechanism that enables the LSST to provide new data with higher time resolution that not only enhances existing investigations, but allows LSST to contribute to new science use cases that generally lie within the categories: \textit{Exploring the Transient Optical Sky}, \textit{Mapping the Milky Way}, and \textit{Taking an Inventory of the Solar System}.
 
 \item {\bf Survey Type Category:} We propose inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
 
@@ -62,23 +62,16 @@ A wide range of astrophysical phenomena ranging from local Kuiper Belt object oc
 
 This proposal relies on a key insight originally from \cite{1986PASP...98..802H} and further developed in \cite{mine}: star trail images are a conduit to achieving subsecond photometry of stellar sources. In star trail images, the tracking is turned off so the telescope rotates with the Earth during the exposure. Stellar sources are stretched into coherent linear trails, which show how the flux of the sources changes throughout the exposure. Figure \ref{fig:trail} shows a simulated LSST star trail image with a one second exposure time. This choice of exposure time is elaborated on in Section \ref{sec:technical}. We then train a deep neural network to scan these large, unorthodox images and detect variability.
 
-The input to the network is a 80x80 pixel crop of an LSST star trail image, the output is a binary classification which determines whether the sample is worth following up. As in many deep learning applications, high quality data and training feedback are essential. We use a suite of LSST simulation tools to produce realistic images. We sample visits from the \textit{minion\_1016} OpSim observing run, then we use CatSim to procure catalogs for each visit, then we use PhoSim to produce high fidelity simulated images of the catalogs \citep{2014SPIE.9150E..15D,2014SPIE.9150E..14C,2015ApJS..218...14P}. We add a new interface into the PhoSim code to simulate \textit{bursts} - a tophat change in flux added to an otherwise flat and static light curve of a source - parameterized by the magnitude change and duration. We train the network over 5 epochs of 80,000 sample 80x80 pixel crops, half of which contain a burst. We train the nextwork to both predict whether the burst exists and to predict the exact photons resulting from the change in flux. Figure \ref{fig:pipeline} highlights this process. 
+The input to the network is a 80x80 pixel crop of an LSST star trail image, the output is a binary classification which determines whether the sample are worthy of more detailed, science specific examination. As in many deep learning applications, high quality data and training feedback are essential. We use a suite of LSST simulation tools to produce realistic images. We sample visits from the \textit{minion\_1016} OpSim observing run, then we use CatSim to procure catalogs for each visit, then we use PhoSim to produce high fidelity simulated images of the catalogs \citep{2014SPIE.9150E..15D,2014SPIE.9150E..14C,2015ApJS..218...14P}. We add a new interface into the PhoSim code to simulate \textit{bursts} - a tophat change in flux added to an otherwise flat and static light curve of a source - parameterized by the magnitude change and duration. We train the network over 5 epochs of 80,000 sample 80x80 pixel crops, half of which contain a burst. We train the network to both predict whether the burst exists and to predict the exact photons resulting from the change in flux. Figure \ref{fig:pipeline} highlights this process. 
 
 We assess the performance of our technique on visits and corresponding images that the network was not trained on. Figure \ref{fig:limit} shows the results. These results are competitive with the state of the art \citep{2016SPIE.9908E..0YD}. 
 \\
 
 {\color{green}
-\noindent AGN/Blazars\\
-Stellar Flares\\
-Exoplanets\\
-Gamma-Ray Bursts\\
-Kuiper Belt Objects\\
-Fast Radio Bursts\\
-Cataclysmic Variables\\
+Science Sections (AGN/Blazars, Stellar Flares, Exoplanets, Gamma-Ray Bursts, Kuiper Belt Objects, Fast Radio Bursts, Cataclysmic Variables)
 }
 
-% Immense potential. We look forward to further developing our technique, validating it on real data from DECam, and refining it for specific science cases. 
-Conclusion.
+{\color{green}Conclusion.}
 
 \
 \begin{figure*}[htb]
@@ -89,7 +82,7 @@ Conclusion.
 % http://localhost:8888/notebooks/Code/Astronomy/exp7/MakeWhitePaperGraphics_20181120.ipynb
 \end{figure*}
 
-\begin{figure*}[htb]
+\begin{figure*}[htb!]
 \center
 \includegraphics{bbox.jpeg}
 \caption{Image processing pipeline.}
@@ -97,7 +90,7 @@ Conclusion.
 % http://localhost:8888/notebooks/Code/Astronomy/exp4/notebooks/MakeVariabilityGraphic_20180329-Copy1ForICMETalk.ipynb
 \end{figure*}
 
-\begin{figure*}[htb]
+\begin{figure*}[htb!]
 \center
 \includegraphics{bbox.jpeg}
 \caption{Detection accuracy and performance limits.}
@@ -106,179 +99,115 @@ Conclusion.
 \end{figure*}
 
 \vspace{.6in}
+\newpage
+\section{Technical Description}
+\label{sec:technical}
+\begin{footnotesize}
+{\it Describe your survey strategy modifications or proposed observations. Please comment on each observing constraint
+below, including the technical motivation behind any constraints. Where relevant, indicate
+if the constraint applies to all requested observations or a specific subset. Please note which 
+constraints are not relevant or important for your science goals.}
+\end{footnotesize}
 
-% \section{Technical Description}
-% \label{sec:technical}
-% \begin{footnotesize}
-% {\it Describe your survey strategy modifications or proposed observations. Please comment on each observing constraint
-% below, including the technical motivation behind any constraints. Where relevant, indicate
-% if the constraint applies to all requested observations or a specific subset. Please note which 
-% constraints are not relevant or important for your science goals.}
-% \end{footnotesize}
+\subsection{Taking Star Trail Images}
+\label{sec:overview}
 
-% \subsection{Overview}
+The key element of our proposal is taking star trail exposures with the telescope tracking turned off. The rotation of the Earth during the exposure with respect to the field produces trails. The trails allow us to see how sources change throughout an exposure. 
 
-% The crux of our proposal is taking star trail exposures where the tracking is turned off. The slow rotation of the Earth during the image with respect to the sky we image, produces star trail images. While these images have been employed for site-testing, during the early days of CCDs, and for popular science images that can be found by a Google search - they have not yet been employed at the scale we are proposing. We have a gradual process to validate that this method can deliver on the science we aspire to.
+Star trail images require new signal analysis to optimize exposure times. Consider the simple scenario of the signal to noise ratio for a single pixel that a source trails over. Let $A$ be the $100\ \mu m^2$ area of the pixel; $N$ be the flux from the source deposited in the pixel; S be the the flux from the sky background; $R$ be the readout noise; $t_{pixel}$ be the 14 ms time the source spends over a single pixel; $t_{exp}$ be the exposure time. Then the signal to noise ratio for resolving a trail amongst the background is:
 
-% We have demonstrated that in a wide variety of high fidelity simulated images our method can effectively detect variability. The next step is to test it on real data. We have proposed to do this and will be taking a half-nights worth of data on DECam in the second half of 2019. This will help us adress many problems.
+$$SNR_{trail} = \frac{N\cdot t_{pixel}}{\sqrt{N\cdot t_{pixel} + S \cdot A \cdot t_{exp} + R^2\cdot A}}$$
 
-% The next stage of testing will take place during comissioning. Through private communication with Steven Kahn and Chuck Claver, we know that there will be ample opportunity to take these images. This data will allow us to further iterate. 
+\noindent There are additional signal to noise analyses that depend on the signature we are sifting for: bursts, occultations, or gradual changes in flux. These all share the $t_{exp}^{-1/2}$ dependence, which shows that shorter exposures provide stronger signal. The operation of the shutter provides a physical lower bound that constrains the minimal exposure time.
 
-% While perhaps this has been done to make popular star trail images, it has never been done at the scale we are proposing. 
+The shutter consists of two sets of flat, sliding plates on opposite sides of the focal plane. During each exposure the plates on one side are drawn back to initiate the exposure and the plates on the other side are pulled over to end the exposure. This double act ensures exposure time uniformity across the focal plane. The minimal exposure time is attained by immediately closing the shutter after the opposite plates finish opening. The exposure time is one second, but the total shutter operation time is two seconds. Two more seconds are required to read out the CCDs and complete the cycle. The total cycle is four seconds with a 25\% duty cycle. Many applications are better served by a higher duty cycle at the expense of some signal. We present three modes of operation:
 
-% There are three modes of operation:
+\begin{itemize}
+\item \textbf{Short Trail:} Taking one second exposures to optimize for signal power and time resolution. 
 
-% Strong Signal-to-Noise:
+\item \textbf{Long Trail:} Taking 15 second exposures to optimize for duty cycle.
 
-% High duty cycle:
+\item \textbf{Strategic Anti-Tracking:} In theory tracking can not only be turned off, but strategically controlled to extend trails further and achieve even higher time resolution. 
+\end{itemize}
 
-% Strategic Rotations:
+We have simulated both short and long trails with high fidelity simulations. In each case, we trained deep neural networks to detect bursts in a range of conditions. The detection efficiency for the short trails is shown in Figure \ref{} and for the long trails in Figure \ref{}. 
 
+\subsection{Constraints}
 
-% \subsection{Constraints}
+\begin{itemize}
+\item \textbf{Footprint.} The length of a star trails depends on the declination through the formula $l = 3.75 \cdot \cos(\delta)$ arcminutes or $1071 \cdot \cos(\delta)$ LSST pixels. We have a slight preference for pointings closer to the equatorial plane. We plan to continue evaluating specific science use cases and to provide more comprehensive footprint guidance by Summer 2019. Section \ref{sec:future} describes this future work in more detail.
 
-% \begin{itemize}
-% \item \textbf{Footprint.} We have not yet developed a footprint optimized for the explorations made possible by star trail images. We plan to continue evaluating specific use cases and aim to provide comprehensive footprint guideance by Summer 2019. We expect the following details to be relevant. The length $l$ of a star trail depends on the declination $\delta$, $l = 1071 \cdot \cos(\delta)$ pixels for the LSST. Star trail data complements existing surveys, including some in other regions of the electromagnetic spectrum. These considerations will likely provide weak constraints on the optimal footprint. 
+\item \textbf{Image Quality.} In theory, a worse seeing will weaken the signal power of a trail against the background by spreading out its flux in the transverse direction. In practice, the performance of the networks we have developed to process star trail images is fairly uncorrelated with seeing. This may change as we continue to refine these methods.
 
-% \item \textbf{Image Quality.} 
+\item \textbf{Sky Brightness.} The SNR for resolving trails is proportional to $S^{-1/2}$, where $S$ is sky brightness (described in Section \ref{sec:overview}). A 4 times brighter sky background reduces the SNR by a factor of 2, which can dramatically alter the number of trails that can be resolved. Star trail imaging is very sensitive to sky brightness. 
 
-% \item \textbf{Sky Brightness.}
+\item \textbf{Total Number of Visits.} Star trail science consists of searching large expanses of sky for rare events. The number of detected events grows linearly with time. Hence the total number of star trail images, or time on the sky, is important.
 
-% \item \textbf{Total Number of Visits.}
+\item \textbf{Distribution of Visits Over Time and Within a Night.} Currently, there are no constraints on the distribution generally, nor on the number of visits within a night.
 
-% \item \textbf{Number of Visits Within Night.}
+\item \textbf{Filter Choice.} We use the `r' filter in our experiments because it gives the most sources. This filter has a high transmission efficiency and good intersection with many stellar SEDs.
 
-% \item \textbf{Distribution of Visits Over Time.}
+\item \textbf{Exposure Constraints.} The shutters prevent exposures below 1 second while longer exposures have weaker signal. We discuss this further in Section \ref{sec:overview}.
 
-% \item \textbf{Filter Choice.}
+\end{itemize}
 
-% \item \textbf{Exposure Constraints.}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        Properties & Importance \hspace{.3in} \\
+        \hline
+        Image quality & 2\\
+        Sky brightness & 1\\
+        Individual image depth & 3\\
+        Co-added image depth & 3\\
+        Number of exposures in a visit & 3\\
+        Number of visits (in a night) & 3\\ 
+        Total number of visits & 1\\
+        Time between visits (in a night) & 3\\
+        Time between visits (between nights)  & 3\\
+        Long-term gaps between visits & 3\\
+        \hline
+    \end{tabular}
+    \caption{Summary of the relative importance of various survey strategy constraints. Each constraint is ranked (1) very important, (2) somewhat important, or (3) not important.}
+        \label{tab:obs_constraints}
+\end{table}
 
-% \end{itemize}
+\section{Performance Evaluation}
+\begin{footnotesize}
+{\it Please describe how to evaluate the performance of a given survey in achieving your desired
+science goals, ideally as a heuristic tied directly to the observing strategy (e.g. number of visits obtained
+within a window of time with a specified set of filters) with a clear link to the resulting effect on science.
+More complex metrics which more directly evaluate science output (e.g. number of eclipsing binaries successfully
+identified as a result of a given survey) are also encouraged, preferably as a secondary metric.
+If possible, provide threshold values for these metrics at which point your proposed science would be unsuccessful 
+and where it reaches an ideal goal, or explain why this is not possible to quantify. While not necessary, 
+if you have already transformed this into a MAF metric, please add a link to the code (or a PR to 
+\href{https://github.com/lsst-nonproject/sims_maf_contrib}{sims\_maf\_contrib}) in addition to the text description. (Limit: 2 pages).}
+\end{footnotesize}
 
-% \begin{table}[ht]
-%     \centering
-%     \begin{tabular}{l|l|l|l}
-%         \toprule
-%         Properties & Importance \hspace{.3in} \\
-%         \midrule
-%         Image quality & 2\\
-%         Sky brightness & 1\\
-%         Individual image depth & 3\\
-%         Co-added image depth & 3\\
-%         Number of exposures in a visit & 3\\
-%         Number of visits (in a night) & 3\\ 
-%         Total number of visits & 1\\
-%         Time between visits (in a night) & 3\\
-%         Time between visits (between nights)  & 3\\
-%         Long-term gaps between visits & 3\\
-%         \bottomrule
-%     \end{tabular}
-%     \caption{{\bf Constraint Rankings:} Summary of the relative importance of various survey strategy constraints. Please rank the importance of each of these considerations, from 1=very important, 2=somewhat important, 3=not important. If a given constraint depends on other parameters in the table, but these other parameters are not important in themselves, please only mark the final constraint as important. For example, individual image depth depends on image quality, sky brightness, and number of exposures in a visit; if your science depends on the individual image depth but not directly on the other parameters, individual image depth would be `1' and the other parameters could be marked as `3', giving us the most flexibility when determining the composition of a visit, for example.}
-%         \label{tab:obs_constraints}
-% \end{table}
+{\color{green}Total time imaging is the most important factor. We can also inject simulated bursts into images to validate the predicted constraining power. }
 
+\vspace{.6in}
 
-% \vspace{.3in}
+\section{Special Data Processing}
+\begin{footnotesize}
+{\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved.}
+\end{footnotesize}
 
-% \subsection{Footprint -- pointings, regions and/or constraints}
-% \begin{footnotesize}{\it Describe the specific pointings or general region (RA/Dec, Galactic longitude/latitude or 
-% Ecliptic longitude/latitude) for the observations. Please describe any additional requirements, especially if there
-% are no specific constraints on the pointings (e.g. stellar density, galactic dust extinction).}
-% \end{footnotesize}
+In order to perform a star trail survey, new LSST telescope control commands will need to be exposed for regular and autonomous toggling of the telescope tracking. As we continue to validate star trail imaging and do small surveys with other facilities, we will be implementing similar commands. 
 
-% We have not yet constrainted this.
-
-% \subsection{Image quality}
-% \begin{footnotesize}{\it Constraints on the image quality (seeing).}\end{footnotesize}
-
-% We are sensitive to widening of the trail in the transverse direction, we are not too sensitive.
-
-% \subsection{Individual image depth and/or sky brightness}
-% \begin{footnotesize}{\it Constraints on the sky brightness in each image and/or individual image depth for point sources.
-% Please differentiate between motivation for a desired sky brightness or individual image depth (as 
-% calculated for point sources). Please provide sky brightness or image depth constraints per filter.}
-% \end{footnotesize}
-
-% Sky brightness is an issue and image depth is not a concern because we do not coadd.
-
-% \subsection{Co-added image depth and/or total number of visits}
-% \begin{footnotesize}{\it  Constraints on the total co-added depth and/or total number of visits.
-% Please differentiate between motivations for a given co-added depth and total number of visits. 
-% Please provide desired co-added depth and/or total number of visits per filter, if relevant.}
-% \end{footnotesize}
-
-% What we care about
-
-% \subsection{Number of visits within a night}
-% \begin{footnotesize}{\it Constraints on the number of exposures (or visits) in a night, especially if considering sequences of visits.  }
-% \end{footnotesize}
-
-% \subsection{Distribution of visits over time}
-% \begin{footnotesize}{\it Constraints on the timing of visits --- within a night, between nights, between seasons or
-% between years (which could be relevant for rolling cadence choices in the WideFastDeep. 
-% Please describe optimum visit timing as well as acceptable limits on visit timing, and options in
-% case of missed visits (due to weather, etc.). If this timing should include particular sequences
-% of filters, please describe.}
-% \end{footnotesize}
-
-% \subsection{Filter choice}
-% \begin{footnotesize}
-% {\it Please describe any filter constraints not included above.}
-% \end{footnotesize}
-
-% \subsection{Exposure constraints}
-% \begin{footnotesize}
-% {\it Describe any constraints on the minimum or maximum exposure time per visit required (or alternatively, saturation limits).
-% Please comment on any constraints on the number of exposures in a visit.}
-% \end{footnotesize}
-
-% \subsection{Other constraints}
-% \begin{footnotesize}
-% {\it Any other constraints.}
-% \end{footnotesize}
-
-% \subsection{Estimated time requirement}
-% \begin{footnotesize}
-% {\it Approximate total time requested for these observations, using the guidelines available at \url{https://github.com/lsst-pst/survey_strategy_wp}.}
-% \end{footnotesize}
-
-% \vspace{.3in}
+{\color{green}Mention locality. Securing a small GPU cluster at NCSA ...}
 
 
+\section{Future Work}
+\label{sec:future}
 
-% \subsection{Technical trades}
-% \begin{footnotesize}
-% {\it To aid in attempts to combine this proposed survey modification with others, please address the following questions:
-% \begin{enumerate}
-%     \item What is the effect of a trade-off between your requested survey footprint (area) and requested co-added depth or number of visits?
-%     \item If not requesting a specific timing of visits, what is the effect of a trade-off between the uniformity of observations and the frequency of observations in time? e.g. a `rolling cadence' increases the frequency of visits during a short time period at the cost of fewer visits the rest of the time, making the overall sampling less uniform.
-%     \item What is the effect of a trade-off on the exposure time and number of visits (e.g. increasing the individual image depth but decreasing the overall number of visits)?
-%     \item What is the effect of a trade-off between uniformity in number of visits and co-added depth? Is there any benefit to real-time exposure time optimization to obtain nearly constant single-visit limiting depth?
-%     \item Are there any other potential trade-offs to consider when attempting to balance this proposal with others which may have similar but slightly different requests?
-% \end{enumerate}}
-% \end{footnotesize}
+The primary goal of this white paper is to bring star trail imaging and its potential to the attention of the LSST Science Advisory Committee and broader LSST community. Star trail imaging offers a bold new opportunity that the LSST, with its enormous etendue, is uniquely positioned to capture. We are building a community of astronomers excited for star trails to help the LSST  realize this potential.
 
-% \section{Performance Evaluation}
-% \begin{footnotesize}
-% {\it Please describe how to evaluate the performance of a given survey in achieving your desired
-% science goals, ideally as a heuristic tied directly to the observing strategy (e.g. number of visits obtained
-% within a window of time with a specified set of filters) with a clear link to the resulting effect on science.
-% More complex metrics which more directly evaluate science output (e.g. number of eclipsing binaries successfully
-% identified as a result of a given survey) are also encouraged, preferably as a secondary metric.
-% If possible, provide threshold values for these metrics at which point your proposed science would be unsuccessful 
-% and where it reaches an ideal goal, or explain why this is not possible to quantify. While not necessary, 
-% if you have already transformed this into a MAF metric, please add a link to the code (or a PR to 
-% \href{https://github.com/lsst-nonproject/sims_maf_contrib}{sims\_maf\_contrib}) in addition to the text description. (Limit: 2 pages).}
-% \end{footnotesize}
+Our community is planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
 
-% \vspace{.6in}
-
-% \section{Special Data Processing}
-% \begin{footnotesize}
-% {\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved. Simon Krughoff}
-% \end{footnotesize}
-
+We have already submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Through private communication with Steven Kahn and Chuck Claver we have also discovered that star trail images will be taken during the LSST commissioning. 
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
