@@ -5,12 +5,11 @@ We are preparing a [LSST Cadence Optimization White Paper](https://www.google.co
 | Topic | Committed Expert | Candidates |
 |---|---|---|
 |AGN/Blazars| Claudia Raiteri | Krista Lynne Smith|
-|Stars/Stellar Flars| |Željko Ivezić, Mario Zurić, Joachim Moeyens, Lynne Jones, David Thomas|
+|Solar System/Stars/Stellar Flars/KBOs| Željko Ivezić |Federica Bianco, Mario Zurić, Joachim Moeyens, Lynne Jones|
 |Exoplanets| | Samantha Thrush, Nick Mondrik| 
 |Gamma-ray Bursts | | Josh Bloom |
-|Kiuper Belt Objects | | Federica Bianco, David Thomas |
 |Fast Radio Bursts | Andrea Possenti | David Thomas|
-|Cataclysmic Variables|  | |
+|Cataclysmic Variables|  | ? |
 
 We will also be reaching out to individuals with expertise in domains that are relevant to this work.
 
@@ -18,8 +17,7 @@ We will also be reaching out to individuals with expertise in domains that are r
 |---|---|
 |NCSA + LSST Special Programs| M. L. Graham, Simon Krughoff, Eric Bellm|
 |CatSim, PhoSim| Colin Burke, John Peterson, Scott Daniels|
-|Star Trails| Steve Howell, George Jacoby|
-|Operations| Robert Blum|
+|Star Trails| Steve Howell, George Jacoby, Robert Blum|
 
 We also encourage those who are generally interested in this technique to get invovled (please email dthomas5[at]stanford.edu and we will get you on the author list). Not only will it be exciting to complete this proposal, but there are many areas we can investigate together moving forward.
 
@@ -30,4 +28,5 @@ We also encourage those who are generally interested in this technique to get in
 - Federica Bianco
 - Andrea Possenti
 - Claudia Raiteri
+- Željko Ivezić
 - *More Welcome*
