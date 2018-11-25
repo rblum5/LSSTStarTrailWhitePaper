@@ -92,9 +92,9 @@ Science Sections (AGN/Blazars, Stellar Flares, Exoplanets, Gamma-Ray Bursts, Kui
 
 \begin{figure*}[htb!]
 \center
-\includegraphics{f7.pdf}
-\caption{Detection accuracy and performance limits for 15s star trails. {\color{green} We expect to have updated performance curves for 1s star trails shortly.}}
-\label{fig:limit}
+\includegraphics{bbox.jpeg}
+\caption{Detection accuracy and performance limits for 1s star trails.}
+\label{fig:shortlimit}
 % http://localhost:8888/notebooks/Code/Astronomy/exp4/notebooks/MakeVariabilityGraphic_20180329-Copy1ForICMETalk.ipynb
 \end{figure*}
 
@@ -130,7 +130,16 @@ The shutter consists of two sets of flat, sliding plates on opposite sides of th
 \item \textbf{Strategic Anti-Tracking:} In theory tracking can not only be turned off, but strategically controlled to extend trails further and achieve even higher time resolution. 
 \end{itemize}
 
-We have simulated both short and long trails with high fidelity simulations. In each case, we trained deep neural networks to detect bursts in a range of conditions. The detection efficiency for the short trails is shown in Figure \ref{} and for the long trails in Figure \ref{}. 
+We have simulated both short and long trails with high fidelity simulations. In each case, we trained deep neural networks to detect bursts in a range of conditions. The detection efficiency for the short trails is shown in Figure \ref{fig:shortlimit} and for the long trails in Figure \ref{fig:longlimit}. 
+
+\begin{figure*}[htb!]
+\center
+\includegraphics{f7.pdf}
+\caption{Detection accuracy and performance limits for 15s star trails.}
+\label{fig:longlimit}
+% http://localhost:8888/notebooks/Code/Astronomy/exp4/notebooks/MakeVariabilityGraphic_20180329-Copy1ForICMETalk.ipynb
+\end{figure*}
+
 
 \subsection{Constraints}
 
@@ -174,19 +183,33 @@ We have simulated both short and long trails with high fidelity simulations. In 
 \end{table}
 
 \section{Performance Evaluation}
-\begin{footnotesize}
-{\it Please describe how to evaluate the performance of a given survey in achieving your desired
-science goals, ideally as a heuristic tied directly to the observing strategy (e.g. number of visits obtained
-within a window of time with a specified set of filters) with a clear link to the resulting effect on science.
-More complex metrics which more directly evaluate science output (e.g. number of eclipsing binaries successfully
-identified as a result of a given survey) are also encouraged, preferably as a secondary metric.
-If possible, provide threshold values for these metrics at which point your proposed science would be unsuccessful 
-and where it reaches an ideal goal, or explain why this is not possible to quantify. While not necessary, 
-if you have already transformed this into a MAF metric, please add a link to the code (or a PR to 
-\href{https://github.com/lsst-nonproject/sims_maf_contrib}{sims\_maf\_contrib}) in addition to the text description. (Limit: 2 pages).}
-\end{footnotesize}
+% \begin{footnotesize}
+% {\it Please describe how to evaluate the performance of a given survey in achieving your desired
+% science goals, ideally as a heuristic tied directly to the observing strategy (e.g. number of visits obtained
+% within a window of time with a specified set of filters) with a clear link to the resulting effect on science.
+% More complex metrics which more directly evaluate science output (e.g. number of eclipsing binaries successfully
+% identified as a result of a given survey) are also encouraged, preferably as a secondary metric.
+% If possible, provide threshold values for these metrics at which point your proposed science would be unsuccessful 
+% and where it reaches an ideal goal, or explain why this is not possible to quantify. While not necessary, 
+% if you have already transformed this into a MAF metric, please add a link to the code (or a PR to 
+% \href{https://github.com/lsst-nonproject/sims_maf_contrib}{sims\_maf\_contrib}) in addition to the text description. (Limit: 2 pages).}
+% \end{footnotesize}
 
-{\color{green}Total time imaging is the most important factor. We can also inject simulated bursts into images to validate the predicted constraining power. }
+The LSST star trail science use cases follow a common template. They use the LSST's large field to search for rare transient events. These events lead either to follow up observations of individual sources, such as an exomoon discovery, or contribute to statistics, such as predicting the number density of small Kuiper Belt objects. Thus, the primary performance metric is a product of the number objects of interest within the field of view times the total time they are exposed in the survey. We sum the weightted contributions from each science in the total performance metric $P$,
+
+$$P = \sum_{s \in Science} t_s w_s \sum_{f \in Field} N_s(f)$$
+
+\noindent where $t_{s}$ is the exposure time for science $s$, $w_s$ is the relative weight of the science application normalized so that $\sum_{s \in Science} w_s = 1$, and $N_s(f)$ is the number of sources for science $s$ in field $f$.
+
+The relative weights of the aforementioned science applications is a subject of future work. The number of sources $N_s(f)$ depends on the detection limits of our star trail image processing (Figures \ref{fig:shortlimit} and \ref{fig:longlimit}). A simple, practical, and data efficient way these limits can be translated to real images is by injecting a small set of real images with simulated variability. This allows us to estimate the limits that govern $N_s(f)$ with a small amount of data.
+
+\begin{figure*}
+\center
+\includegraphics[width=0.95\columnwidth]{starcount.pdf}
+\caption{The predicted number of stars in the LSST field of view at different galactic latitudes. The counts come from CatSim queries.}
+\label{fig:count}
+% http://localhost:8888/notebooks/Code/Astronomy/exp8/ProposalFieldCounts.ipynb
+\end{figure*}
 
 \vspace{.6in}
 
@@ -195,19 +218,22 @@ if you have already transformed this into a MAF metric, please add a link to the
 {\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved.}
 \end{footnotesize}
 
-In order to perform a star trail survey, new LSST telescope control commands will need to be exposed for regular and autonomous toggling of the telescope tracking. As we continue to validate star trail imaging and do small surveys with other facilities, we will be implementing similar commands. 
+Special data processing will be required to extract transient events from the raw LSST star trail images. After the instrument signature removal task has been applied, these images must be processed by a custom transient detection pipeline. Our work to date has used neural networks for this task. The network can classify a single 80x80 pixel 1s star trail crop in 0.6ms on a Xeon E5-2640 v4 CPU connected to a NVIDIA Tesla P100 GPU via PCIe. Figure \ref{fig:count} shows that there will be around $10^4$ trails to classify at a typical LSST galactic latitude. Thus, a single GPU setup could process a full LSST image in around 30 seconds. The crops are processed independently, which allows us to reduce the speed by approximately a factor of $1/M$ where $M$ is the number of GPUs. A single, meager multi-GPU machine would provide sufficient computational processing for the survey we are proposing.
 
-{\color{green}Mention locality. Securing a small GPU cluster at NCSA ...}
+After processing the star trails, we need to store the details - the crop and some metadata - of detected transient events. We expect detections to be rare enough ($< 1/10,000$) that the required storage will be trivial. A 100 GB database or filesystem should be sufficient. 
 
+The processing can be done at the base facility in La Serena, at the NCSA where the raw data is archived, or at a local university facility. We have reached out to LSST and NCSA staff to learn the best way to accomodate our special data processing needs.
+
+Star trail imaging may also require new LSST telescope commands that facilitate toggling the tracking. As we continue to validate star trail imaging and do small surveys at other telescopes, we will be implementing similar commands.
 
 \section{Future Work}
 \label{sec:future}
 
-The primary goal of this white paper is to bring star trail imaging and its potential to the attention of the LSST Science Advisory Committee and broader LSST community. Star trail imaging offers a bold new opportunity that the LSST, with its enormous etendue, is uniquely positioned to capture. We are building a community of astronomers excited for star trails to help the LSST  realize this potential.
+The primary goal of this white paper is to bring star trail imaging and its potential to the attention of the LSST Science Advisory Committee and broader LSST community. Star trail imaging offers a bold new opportunity that the LSST, with its enormous etendue, is uniquely positioned to capture. 
 
-Our community is planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
+We are forming a star trail community based on the growing interest from astronomers in diverse fields. We are planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
 
-We have already submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Through private communication with Steven Kahn and Chuck Claver we have also discovered that star trail images will be taken during the LSST commissioning. 
+We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. We have learned through communication with Steven Kahn and Chuck Claver that star trail images will be taken during the LSST commissioning, which will provide further practice with this method. 
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
