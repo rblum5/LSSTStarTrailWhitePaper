@@ -20,7 +20,7 @@
 \definecolor{green}{HTML}{228B22}
 
 \title{Unveiling the Rich and Diverse Universe of Subsecond Astrophysics through LSST Star Trails}
-\author{David Thomas, Steven Kahn, Federica Bianco, {\color{green}More Coming Soon}}
+\author{David Thomas, Steven Kahn, Federica Bianco, Željko Ivezić, \\{\color{green}More Coming Soon}}
 \date{May 2018}
 
 \begin{document}
@@ -28,7 +28,9 @@
 \maketitle
 
 \begin{abstract}
-We present a unique method that allows the LSST to scan the sky for subsecond stellar variability. The method has operational and image processing components. The operational component is to take star trail images, which facilitate subexposure photometry. The image processing component is to use deep learning to sift for transient events on timescales down to 10 ms. We advocate for coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue to produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
+We present a unique method that allows the LSST to scan the sky for short time scales (subsecond) stellar variability.
+%The method has operational and image processing components.
+The operational component of the strategy requires LSST to take star trail images. The image processing component uses deep learning to sift for transient events on timescales down to 10 ms. We advocate for enabling this observing mode with LSST, as coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue will produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
 \end{abstract}
 
 \section{White Paper Information}
@@ -37,7 +39,7 @@ The corresponding author is David Thomas (dthomas5@stanford.edu).
 \begin{enumerate} 
 \item {\bf Science Category:} We introduce a mechanism that enables the LSST to provide new data with higher time resolution that not only enhances existing investigations, but allows LSST to contribute to new science use cases that generally lie within the categories: \textit{Exploring the Transient Optical Sky}, \textit{Mapping the Milky Way}, and \textit{Taking an Inventory of the Solar System}.
 
-\item {\bf Survey Type Category:} We propose inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
+\item {\bf Survey Type Category:} This strategy could be implemented as a \emph{Misurvey}, or inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
 
 \item {\bf Observing Strategy Category:}
 While different fields are conducive to different aspects of our method - for example, searching open clusters for flare stars - it is largely agnostic of where the telescope is pointed. Furthermore, our proposal can be trivially interleaved with the main LSST survey.
@@ -49,30 +51,57 @@ While different fields are conducive to different aspects of our method - for ex
 
 \section{Scientific Motivation}
 
-\begin{footnotesize}
-{\it Describe the scientific justification for this white paper in the context
-of your field, as well as the importance to the general program of astronomy, 
-including the relevance over the next decade. 
-Describe other relevant data, and justify why LSST is the best facility for these observations.
-(Limit: 2 pages + 1 page for figures.)}
-\end{footnotesize}
-\\
+% \begin{footnotesize}
+% {\it Describe the scientific justification for this white paper in the context
+% of your field, as well as the importance to the general program of astronomy, 
+% including the relevance over the next decade. 
+% Describe other relevant data, and justify why LSST is the best facility for these observations.
+% (Limit: 2 pages + 1 page for figures.)}
+% \end{footnotesize}
 
-A wide range of astrophysical phenomena ranging from local Kuiper Belt object occultations to cosmic gamma-ray bursts manifest on subsecond time scales. Conventional optical telescopes rely on charge-coupled devices (CCDs) which typically take around ten seconds to read out. This readout time limits the time resolution they can achieve and precludes them from participating in high time resolution investigations. Furthermore, the special instruments that can image optical bands at high speeds have fields of view that are typically a few arcminutes, or less than 1/1000th of the LSST field of view. We present a mechanism that allows the LSST to explore the subsecond universe and describe how this unique data will (i) enhance planned LSST investigations of active galactic nuclei (AGN), stellar flares, and exoplanets and (ii) enable new LSST science with Kuiper Belt objects, fast radio bursts (FRBs), gamma-ray bursts (GRBs), and cataclysmic variables.
+Subsecond photometry provides particularly valuable insights for studies of compact 
+objects and for studies of occultations, eclipses, and transits. In case of compact objects, 
+such as stellar mass black holes, white dwarfs and neutron stars, high-speed observations
+are required because their dynamical timescales range from milliseconds in black holes and 
+neutron stars to seconds in white dwarfs. In case of extrinsic variability, such as occultations 
+and eclipses, increased time resolution typically corresponds to an increased spatial resolution. 
+Subsecond photometry to faint brightness levels can thus open new parameter space in studies 
+of a wide range of astrophysical phenomena including active galactic nuclei (AGN), stellar flares, 
+exoplanets, Kuiper Belt objects (including their atmospheres), fast radio bursts (FRBs), gamma-ray 
+bursts (GRBs), X-ray binaries, polars, symbiotic stars, cataclysmic variables, asteroid sizes, and
+might as well discover new sources of photometric variability (e.g., \citealt{D2011, KRS2014, 
+Gandhi2016}). 
 
-This proposal relies on a key insight originally from \cite{1986PASP...98..802H} and further developed in \cite{mine}: star trail images are a conduit to achieving subsecond photometry of stellar sources. In star trail images, the tracking is turned off so the telescope rotates with the Earth during the exposure. Stellar sources are stretched into coherent linear trails, which show how the flux of the sources changes throughout the exposure. Figure \ref{fig:trail} shows a simulated LSST star trail image with a one second exposure time. This choice of exposure time is elaborated on in Section \ref{sec:technical}. We then train a deep neural network to scan these large, unorthodox images and detect variability.
+Unfortunately, subsecond photometry to faint brightness levels is technically challenging, especially
+if large sky coverage is also desired. Conventional optical telescopes rely on charge-coupled devices 
+(CCDs) which typically take at least several seconds to read out. This readout time limits the time 
+resolution they can achieve and precludes them from efficient high-time-resolution investigations. 
+Furthermore, the special instruments that can image optical bands at high speeds have fields of view 
+that are typically a few arcminutes, or less than 1/1000th of the LSST field of view. We present here 
+a method that allows the LSST to explore the subsecond universe at an unprecendented combination of 
+depth and sky coverage. 
+
+This proposal relies on a key insight originally from \cite{1986PASP...98..802H} and further developed in \cite{mine}: star trail images are a conduit to achieving subsecond photometry of stellar sources. In star trail images, the tracking is turned off so the telescope rotates with the Earth during the exposure. Stellar sources are stretched into coherent linear trails, which show how the flux of the sources changes throughout the exposure. Figure \ref{fig:trail} shows a simulated LSST star trail image with a one second exposure time. We then train a deep neural network to scan these large, unorthodox images and detect variability.
 
 The input to the network is a 80x80 pixel crop of an LSST star trail image, the output is a binary classification which determines whether the sample are worthy of more detailed, science specific examination. As in many deep learning applications, high quality data and training feedback are essential. We use a suite of LSST simulation tools to produce realistic images. We sample visits from the \textit{minion\_1016} OpSim observing run, then we use CatSim to procure catalogs for each visit, then we use PhoSim to produce high fidelity simulated images of the catalogs \citep{2014SPIE.9150E..15D,2014SPIE.9150E..14C,2015ApJS..218...14P}. We add a new interface into the PhoSim code to simulate \textit{bursts} - a tophat change in flux added to an otherwise flat and static light curve of a source - parameterized by the magnitude change and duration. We train the network over 5 epochs of 80,000 sample 80x80 pixel crops, half of which contain a burst. We train the network to both predict whether the burst exists and to predict the exact photons resulting from the change in flux. Figure \ref{fig:pipeline} highlights this process. 
 
-We assess the performance of our technique on visits and corresponding images that the network was not trained on. Figure \ref{fig:limit} shows the results. These results are competitive with the state of the art \citep{2016SPIE.9908E..0YD}. 
-\\
+We assess the performance of our technique on visits and corresponding images that the network was not trained on (Figure \ref{fig:limit} shows the results). The results are competitive with the state of the art \citep{2016SPIE.9908E..0YD}. Below we elaborate on the specific science that will benefit from star trail data.
+
+{\bf Outer Solar System}: the catalog of Solar System objects that live beyond Neptune is largely incomplete below 10~km in diameter, due to the extreme faintness of these object that shine in reflected sunlight at distances greater than 50AU. Right at the kilometer size range, however the imprint of dynamical processes that shape the Solar System on the Kuiper Belt could allow to distinguish between formation and evolution models (e.g. Kenyon and Bromly 2010). Similarly, inner and outer Oort cloud objects, at distances of 100s or 1000s of AUs are to dim to observe directly and these Solar System structures are known only from models and the occasional visits these bodies pay to the inner solar system (?). A promising method for detection of smaller and farther away Outer Solar System objects is through stellar occultations (Niehi et al., Hilde et al.) but the occultation events are rare and limited to subsecond duration, requiring both large field of view and short exposures at high cadence, something generally very difficult to achieve (Bianco et al. 2009). These LSST observations would constrain the size distribution and number density of KBOs and Oort cloud objects, leading to constraints on Solar System evolution models.
 
 {\color{green}
-Science Sections (AGN/Blazars, Stellar Flares, Exoplanets, Gamma-Ray Bursts, Kuiper Belt Objects, Fast Radio Bursts, Cataclysmic Variables)
+
+{\bf Fast Radio Bursts}: 
+
+{\bf Blazars}: 
+
+{\bf Exoplanets}: 
+
+{\bf Stellar Flares}: 
+
+{\bf Other (Cataclysmic Variables, X-ray binaries, GRBs, ...)}: 
+
 }
-
-{\color{green}Conclusion.}
-
 \
 \begin{figure*}[htb]
 \center
@@ -195,7 +224,7 @@ We have simulated both short and long trails with high fidelity simulations. In 
 % \href{https://github.com/lsst-nonproject/sims_maf_contrib}{sims\_maf\_contrib}) in addition to the text description. (Limit: 2 pages).}
 % \end{footnotesize}
 
-The LSST star trail science use cases follow a common template. They use the LSST's large field to search for rare transient events. These events lead either to follow up observations of individual sources, such as an exomoon discovery, or contribute to statistics, such as predicting the number density of small Kuiper Belt objects. Thus, the primary performance metric is a product of the number objects of interest within the field of view times the total time they are exposed in the survey. We sum the weightted contributions from each science in the total performance metric $P$,
+The LSST star trail science use cases follow a common template. They use the LSST's large field to search for rare transient events. These events lead either to follow up observations of individual sources, such as an exomoon discovery, or contribute to statistics, such as predicting the number density of small Kuiper Belt objects. Thus, the primary performance metric is a product of the number objects of interest within the field of view times the total time they are exposed in the survey. We sum the weighted contributions from each science in the total performance metric $P$,
 
 $$P = \sum_{s \in Science} t_s w_s \sum_{f \in Field} N_s(f)$$
 
@@ -222,7 +251,7 @@ Special data processing will be required to extract transient events from the ra
 
 After processing the star trails, we need to store the details - the crop and some metadata - of detected transient events. We expect detections to be rare enough ($< 1/10,000$) that the required storage will be trivial. A 100 GB database or filesystem should be sufficient. 
 
-The processing can be done at the base facility in La Serena, at the NCSA where the raw data is archived, or at a local university facility. We have reached out to LSST and NCSA staff to learn the best way to accomodate our special data processing needs.
+The processing can be done at the base facility in La Serena, at the NCSA where the raw data is archived, or at a local university facility. We have reached out to LSST and NCSA staff to learn the best way to accommodate our special data processing needs.
 
 Star trail imaging may also require new LSST telescope commands that facilitate toggling the tracking. As we continue to validate star trail imaging and do small surveys at other telescopes, we will be implementing similar commands.
 
@@ -233,7 +262,7 @@ The primary goal of this white paper is to bring star trail imaging and its pote
 
 We are forming a star trail community based on the growing interest from astronomers in diverse fields. We are planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
 
-We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. We have learned through communication with Steven Kahn and Chuck Claver that star trail images will be taken during the LSST commissioning, which will provide further practice with this method. 
+We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Star trail images will also be taken during the LSST commissioning, which will provide further practice. 
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
