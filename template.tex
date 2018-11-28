@@ -28,7 +28,7 @@
 \maketitle
 
 \begin{abstract}
-We present a unique method that allows the LSST to scan the sky for short time scales (subsecond) stellar variability.
+We present a unique method that allows the LSST to scan the sky for stellar variability on short timescales (subsecond).
 %The method has operational and image processing components.
 The operational component of the strategy requires LSST to take star trail images. The image processing component uses deep learning to sift for transient events on timescales down to 10 ms. We advocate for enabling this observing mode with LSST, as coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue will produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
 \end{abstract}
@@ -141,18 +141,18 @@ constraints are not relevant or important for your science goals.}
 \subsection{Taking Star Trail Images}
 \label{sec:overview}
 
-The key element of our proposal is taking star trail exposures with the telescope tracking turned off. The rotation of the Earth during the exposure with respect to the field produces trails. The trails allow us to see how sources change throughout an exposure. 
+The key element of our proposal is taking star trail exposures with the telescope tracking turned off, or strategically commanded to produce a similar effect. The rotation of the telescope during the exposure with respect to the field produces trails. The trails allow us to see how sources change throughout an exposure. 
 
-Star trail images require new signal analysis to optimize exposure times. Consider the simple scenario of the signal to noise ratio for a single pixel that a source trails over. Let $A$ be the $100\ \mu m^2$ area of the pixel; $N$ be the flux from the source deposited in the pixel; S be the the flux from the sky background; $R$ be the readout noise; $t_{pixel}$ be the 14 ms time the source spends over a single pixel; $t_{exp}$ be the exposure time. Then the signal to noise ratio for resolving a trail amongst the background is:
+Star trail images require new signal analysis to optimize exposure times. Consider the simple scenario of the signal to noise ratio for a single LSST pixel that a source trails over. Let $A$ be the $100\ \mu m^2$ area of the pixel; $N$ be the flux from the source deposited in the pixel; S be the the flux from the sky background; $R$ be the readout noise; $t_{pixel}$ be the 14 ms time the source spends over a single pixel; $t_{exp}$ be the exposure time. Then the signal to noise ratio for resolving a trail amongst the background is:
 
 $$SNR_{trail} = \frac{N\cdot t_{pixel}}{\sqrt{N\cdot t_{pixel} + S \cdot A \cdot t_{exp} + R^2\cdot A}}$$
 
-\noindent There are additional signal to noise analyses that depend on the signature we are sifting for: bursts, occultations, or gradual changes in flux. These all share the $t_{exp}^{-1/2}$ dependence, which shows that shorter exposures provide stronger signal. The operation of the shutter provides a physical lower bound that constrains the minimal exposure time.
+\noindent There are additional signal to noise analyses that depend on the signature we are sifting for: bursts, occultations, or gradual changes in flux. These all share the $t_{exp}^{-1/2}$ dependence, which shows that \textbf{shorter exposures provide stronger signal}. The operation of the shutter provides a physical lower bound that constrains the minimal exposure time.
 
-The shutter consists of two sets of flat, sliding plates on opposite sides of the focal plane. During each exposure the plates on one side are drawn back to initiate the exposure and the plates on the other side are pulled over to end the exposure. This double act ensures exposure time uniformity across the focal plane. The minimal exposure time is attained by immediately closing the shutter after the opposite plates finish opening. The exposure time is one second, but the total shutter operation time is two seconds. Two more seconds are required to read out the CCDs and complete the cycle. The total cycle is four seconds with a 25\% duty cycle. Many applications are better served by a higher duty cycle at the expense of some signal. We present three modes of operation:
+The shutter consists of two sets of flat, sliding plates on opposite sides of the focal plane. During each exposure the plates on one side are drawn back to initiate the exposure and the plates on the other side are pulled over to end the exposure. This double act ensures exposure time uniformity across the focal plane. The minimal exposure time is attained by closing the second set of shutter plates immediately after the opposing set of plates finish opening. The exposure time is one second, but the total shutter operation time is two seconds. Two more seconds are required to read out the CCDs and complete the cycle. Thus the minimum exposure cycle is four seconds with a 25\% duty cycle. While this provides the strongest signal, many applications are better served by a higher duty cycle. We envision three primary modes of operation:
 
 \begin{itemize}
-\item \textbf{Short Trail:} Taking one second exposures to optimize for signal power and time resolution. 
+\item \textbf{Short Trail:} Taking one second exposures to optimize for signal power and time resolution.
 
 \item \textbf{Long Trail:} Taking 15 second exposures to optimize for duty cycle.
 
@@ -173,20 +173,19 @@ We have simulated both short and long trails with high fidelity simulations. In 
 \subsection{Constraints}
 
 \begin{itemize}
-\item \textbf{Footprint.} The length of a star trails depends on the declination through the formula $l = 3.75 \cdot \cos(\delta)$ arcminutes or $1071 \cdot \cos(\delta)$ LSST pixels. We have a slight preference for pointings closer to the equatorial plane. We plan to continue evaluating specific science use cases and to provide more comprehensive footprint guidance by Summer 2019. Section \ref{sec:future} describes this future work in more detail.
+\item \textbf{Footprint.} {\color{green}The length of a star trails depends on the declination through the formula $l = 3.75 \cdot \cos(\delta)$ arcminutes or $1071 \cdot \cos(\delta)$ LSST pixels. We have a slight preference for pointings closer to the equatorial plane. We plan to continue evaluating specific science use cases and to provide more comprehensive footprint guidance by Summer 2019. Section \ref{sec:future} describes this future work in more detail.}
 
-\item \textbf{Image Quality.} In theory, a worse seeing will weaken the signal power of a trail against the background by spreading out its flux in the transverse direction. In practice, the performance of the networks we have developed to process star trail images is fairly uncorrelated with seeing. This may change as we continue to refine these methods.
+\item \textbf{Image Quality.} Star trail images are sensitive to the image quality and seeing, measured by the size of the PSF, particularly in the direction transverse to the trails. When the flux of a source is spread out in the transverse direction, the signal decreases. In practice, the performance of the networks we have developed to process star trail images are far more sensitive to the sky background. Thus while good seeing is important, it is not crucial.
 
 \item \textbf{Sky Brightness.} The SNR for resolving trails is proportional to $S^{-1/2}$, where $S$ is sky brightness (described in Section \ref{sec:overview}). A 4 times brighter sky background reduces the SNR by a factor of 2, which can dramatically alter the number of trails that can be resolved. Star trail imaging is very sensitive to sky brightness. 
 
 \item \textbf{Total Number of Visits.} Star trail science consists of searching large expanses of sky for rare events. The number of detected events grows linearly with time. Hence the total number of star trail images, or time on the sky, is important.
 
-\item \textbf{Distribution of Visits Over Time and Within a Night.} Currently, there are no constraints on the distribution generally, nor on the number of visits within a night.
+\item \textbf{Distribution of Visits Over Time and Within a Night.} We would like to shadow the LSST with radio telescopes to synchronize FRB detections on nights where lots of star trail images will be taken. Thus, allocating the star trail visits in a small subset of nights is best. 
 
 \item \textbf{Filter Choice.} We use the `r' filter in our experiments because it gives the most sources. This filter has a high transmission efficiency and good intersection with many stellar SEDs.
 
-\item \textbf{Exposure Constraints.} The shutters prevent exposures below 1 second while longer exposures have weaker signal. We discuss this further in Section \ref{sec:overview}.
-
+\item \textbf{Exposure Constraints.} We described the limits on exposure time in Section \ref{sec:overview}. The primary trade-off is between signal power and duty cycle. The minimal exposure time is one second, which offers the strongest signal and lowest duty cycle. We have also tested 15 second exposures, which have a great duty cycle and weaker signal. 
 \end{itemize}
 
 \begin{table}[ht]
@@ -200,10 +199,8 @@ We have simulated both short and long trails with high fidelity simulations. In 
         Individual image depth & 3\\
         Co-added image depth & 3\\
         Number of exposures in a visit & 3\\
-        Number of visits (in a night) & 3\\ 
         Total number of visits & 1\\
-        Time between visits (in a night) & 3\\
-        Time between visits (between nights)  & 3\\
+        Distributing visits within a small subset of nights & 2\\
         Long-term gaps between visits & 3\\
         \hline
     \end{tabular}
@@ -243,24 +240,22 @@ The relative weights of the aforementioned science applications is a subject of 
 \vspace{.6in}
 
 \section{Special Data Processing}
-\begin{footnotesize}
-{\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved.}
-\end{footnotesize}
+% \begin{footnotesize}
+% {\it Describe any data processing requirements beyond the standard LSST Data Management pipelines and how these will be achieved.}
+% \end{footnotesize}
 
-Special data processing will be required to extract transient events from the raw LSST star trail images. After the instrument signature removal task has been applied, these images must be processed by a custom transient detection pipeline. Our work to date has used neural networks for this task. The network can classify a single 80x80 pixel 1s star trail crop in 0.6ms on a Xeon E5-2640 v4 CPU connected to a NVIDIA Tesla P100 GPU via PCIe. Figure \ref{fig:count} shows that there will be around $10^4$ trails to classify at a typical LSST galactic latitude. Thus, a single GPU setup could process a full LSST image in around 30 seconds. The crops are processed independently, which allows us to reduce the speed by approximately a factor of $1/M$ where $M$ is the number of GPUs. A single, meager multi-GPU machine would provide sufficient computational processing for the survey we are proposing.
+We aim to process the data within 48 hours of an exposure. The data will be in the Data Access Center within 24 hours and can be downloaded via the LSST Science Platform. The remaining 24 hours are more than enough to apply the special data processing.
 
-After processing the star trails, we need to store the details - the crop and some metadata - of detected transient events. We expect detections to be rare enough ($< 1/10,000$) that the required storage will be trivial. A 100 GB database or filesystem should be sufficient. 
+After the instrument signature removal task has been applied, these images must be processed by a custom transient detection pipeline. Our work to date has used neural networks for this task. The network can classify a single 80x80 pixel 1s star trail crop in 0.6ms on a Xeon E5-2640 v4 CPU connected to a NVIDIA Tesla P100 GPU via PCIe. Figure \ref{fig:count} shows that there will be $\mathcal{O}(10^4)$ trails to classify at a typical LSST galactic latitude. Thus, a single GPU setup could process a full LSST image in $\mathcal{O}(30)$ seconds. The crops are processed independently, which allows us to reduce the speed by approximately a factor of $1/M$ where $M$ is the number of GPUs.  After processing the star trails, we need to store the details - the crop and some metadata - of detected transient events. We expect detections to be rare enough ($< 1/10,000$) that the required storage will be trivial. Thus a single GPU workstation would provide sufficient computational processing and disk space for the survey we are proposing.
 
-The processing can be done at the base facility in La Serena, at the NCSA where the raw data is archived, or at a local university facility. We have reached out to LSST and NCSA staff to learn the best way to accommodate our special data processing needs.
-
-Star trail imaging may also require new LSST telescope commands that facilitate toggling the tracking. As we continue to validate star trail imaging and do small surveys at other telescopes, we will be implementing similar commands.
+Star trail imaging will also require invoking LSST telescope commands to toggle the tracking. As we continue to validate star trail imaging and do small surveys at other telescopes, we will be implementing and employing similar commands. We do not envision this being a significant burden.
 
 \section{Future Work}
 \label{sec:future}
 
 The primary goal of this white paper is to bring star trail imaging and its potential to the attention of the LSST Science Advisory Committee and broader LSST community. Star trail imaging offers a bold new opportunity that the LSST, with its enormous etendue, is uniquely positioned to capture. 
 
-We are forming a star trail community based on the growing interest from astronomers in diverse fields. We are planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
+% We are forming a star trail community based on the growing interest from astronomers in diverse fields. We are planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
 
 We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Star trail images will also be taken during the LSST commissioning, which will provide further practice. 
 
