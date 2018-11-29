@@ -28,9 +28,9 @@
 \maketitle
 
 \begin{abstract}
-We present a unique method that allows the LSST to scan the sky for stellar variability on short timescales (subsecond).
+We present a unique method that allows the LSST to scan the sky for stellar variability on short timescales.
 %The method has operational and image processing components.
-The operational component of the strategy requires LSST to take star trail images. The image processing component uses deep learning to sift for transient events on timescales down to 10 ms. We advocate for enabling this observing mode with LSST, as coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue will produce the first optical survey of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
+The operational component of the strategy requires LSST to take star trail images. The image processing component uses deep learning to sift for transient events on timescales down to 10 ms. We advocate for enabling this observing mode with LSST, as coupling this capability with the LSST's unrivaled 319.5 m$^2$deg$^2$ etendue will produce the first optical \textit{survey} of the universe on these timescales. We explain how this data will advance both planned lines of investigation and enable new research in the areas of stellar flares, cataclysmic variables, active galactic nuclei, Kuiper Belt objects, gamma-ray bursts, and fast radio bursts.
 \end{abstract}
 
 \section{White Paper Information}
@@ -39,7 +39,7 @@ The corresponding author is David Thomas (dthomas5@stanford.edu).
 \begin{enumerate} 
 \item {\bf Science Category:} We introduce a mechanism that enables the LSST to provide new data with higher time resolution that not only enhances existing investigations, but allows LSST to contribute to new science use cases that generally lie within the categories: \textit{Exploring the Transient Optical Sky}, \textit{Mapping the Milky Way}, and \textit{Taking an Inventory of the Solar System}.
 
-\item {\bf Survey Type Category:} This strategy could be implemented as a \emph{Misurvey}, or inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
+\item {\bf Survey Type Category:} This strategy could be implemented as a \emph{Mini-survey}, or inserting occasional star trail images into the main \textit{Wide-Fast-Deep} survey.
 
 \item {\bf Observing Strategy Category:}
 While different fields are conducive to different aspects of our method - for example, searching open clusters for flare stars - it is largely agnostic of where the telescope is pointed. Furthermore, our proposal can be trivially interleaved with the main LSST survey.
@@ -156,7 +156,7 @@ The shutter consists of two sets of flat, sliding plates on opposite sides of th
 
 \item \textbf{Long Trail:} Taking 15 second exposures to optimize for duty cycle.
 
-\item \textbf{Strategic Anti-Tracking:} In theory tracking can not only be turned off, but strategically controlled to extend trails further and achieve even higher time resolution. 
+\item \textbf{Strategic Anti-Tracking:} In theory tracking not only be turned off to induce rotation, but strategically controlled to extend trails further and achieve even higher time resolution. 
 \end{itemize}
 
 We have simulated both short and long trails with high fidelity simulations. In each case, we trained deep neural networks to detect bursts in a range of conditions. The detection efficiency for the short trails is shown in Figure \ref{fig:shortlimit} and for the long trails in Figure \ref{fig:longlimit}. 
@@ -169,11 +169,16 @@ We have simulated both short and long trails with high fidelity simulations. In 
 % http://localhost:8888/notebooks/Code/Astronomy/exp4/notebooks/MakeVariabilityGraphic_20180329-Copy1ForICMETalk.ipynb
 \end{figure*}
 
-
 \subsection{Constraints}
 
 \begin{itemize}
-\item \textbf{Footprint.} {\color{green}The length of a star trails depends on the declination through the formula $l = 3.75 \cdot \cos(\delta)$ arcminutes or $1071 \cdot \cos(\delta)$ LSST pixels. We have a slight preference for pointings closer to the equatorial plane. We plan to continue evaluating specific science use cases and to provide more comprehensive footprint guidance by Summer 2019. Section \ref{sec:future} describes this future work in more detail.}
+\item \textbf{Footprint.} There are two modes of footprints. The first mode is to occassionally take short trail images. These observations can be interleaved with the main \textit{Wide-Fast-Deep} survey. It is especially efficient to take short trail images in the middle of a long slew. This shaves 2 seconds off the full cycle time, because the readout can occur while the telescope continues its slewing, and brings the total time cost to the main survey down to 2 seconds. The average LSST slew in the OpSim \textit{minion\_1016} run is 6.5 seconds and 2\% of the simulated observations have a slew time longer than 30 seconds. Inserting a short trail image on just half of these longer slews would meet our science goals and could lead to new discoveries. 
+
+The other mode is a dedicated minisurvey with long trail images. This would be allocated across a small subset of days. This works best for detecting FRBs because we could shadow the LSST with a radio telescope and confirm any discovered optical counterparts.
+
+For both modes it is best to stay in the galactic latitude range $5^o < |b| < 30^o$. The sky brightness washes out the trails for visits too close to the galactic plane and there are fewer sources at higher galactic latitudes (Figure \ref{fig:count}). The length of star trails is related to the declination by $l = 3.75 \cdot \cos(\delta)$ arcminutes per second (or $71 \cdot \cos(\delta) s^{-1}$ LSST pixels pixels per second). Visits close to the equatorial plane give the longest trails and best time resolution. 
+
+There are many synergies in taking star trails of fields that have been previously observed with other surveys. The Kepler K2 fields \citep{2014PASP..126..398H} are a good choice because the sources have short cadence lightcurves for many sources and the fields have been extensively studied in other wavelengths as well \citep{2016HEAD...1510605S}.
 
 \item \textbf{Image Quality.} Star trail images are sensitive to the image quality and seeing, measured by the size of the PSF, particularly in the direction transverse to the trails. When the flux of a source is spread out in the transverse direction, the signal decreases. In practice, the performance of the networks we have developed to process star trail images are far more sensitive to the sky background. Thus while good seeing is important, it is not crucial.
 
@@ -183,7 +188,7 @@ We have simulated both short and long trails with high fidelity simulations. In 
 
 \item \textbf{Distribution of Visits Over Time and Within a Night.} We would like to shadow the LSST with radio telescopes to synchronize FRB detections on nights where lots of star trail images will be taken. Thus, allocating the star trail visits in a small subset of nights is best. 
 
-\item \textbf{Filter Choice.} We use the `r' filter in our experiments because it gives the most sources. This filter has a high transmission efficiency and good intersection with many stellar SEDs.
+\item \textbf{Filter Choice.} We use the `r' filter in our experiments because it has the best signal strength. The filter has a high transmission efficiency and intersection with stellar SEDs.
 
 \item \textbf{Exposure Constraints.} We described the limits on exposure time in Section \ref{sec:overview}. The primary trade-off is between signal power and duty cycle. The minimal exposure time is one second, which offers the strongest signal and lowest duty cycle. We have also tested 15 second exposures, which have a great duty cycle and weaker signal. 
 \end{itemize}
@@ -257,7 +262,7 @@ The primary goal of this white paper is to bring star trail imaging and its pote
 
 % We are forming a star trail community based on the growing interest from astronomers in diverse fields. We are planning more specific investigations of the individual science cases mentioned here. These involve calculating the observational signature of the phenomena of interest, generating simulated images, and assessing the data's ability to constrain theoretical models. We plan to have a session dedicated to this technique at the 2019 LSST Project and Community Workshop where community members can present their results.
 
-We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Star trail images will also be taken during the LSST commissioning, which will provide further practice. 
+We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We will measure how various stellar variability detection methods translate to real data. It will also give us experience programmatically operating telescopes in this manner. Star trail images will also be taken during the LSST commissioning, which will provide further practice and initial science opportunities. 
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
