@@ -6,11 +6,38 @@
 \usepackage[colorlinks=true,linkcolor=blue, citecolor=blue, linkcolor=red]{hyperref}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{authblk}
 \definecolor{green}{HTML}{228B22}
 
+% \author[1,2,3]{David Thomas}
+% \author[2]{Steven M. Kahn}
+% \author[1]{}
+% \author[1]{Static}
+% \affil[1]{TeX.SX}
+% \affil[2]{Both on a bus}
+
+% CCPP, New York University, 4 Washington Place, New York, NY 10003, USA
+% 6Center for Urban Science and Progress, New York University, 1 MetroTech Center, Brooklyn, NY 11201, USA
+
+
 \title{Unveiling the Rich and Diverse Universe of Subsecond Astrophysics through LSST Star Trails}
-\author{David Thomas, Steven Kahn, Federica Bianco, Željko Ivezić, \\
-Claudia M. Raiteri, Andrea Possenti, John Peterson, Colin Burke, \\Robert Blum, George Jacoby, Steve Howell, Grzegorz Madejski}
+\author{
+\parbox{0.9\textwidth}{
+\normalsize
+David Thomas$^{1,2}$,
+Steven M. Kahn$^{2,3}$,
+Federica B. Bianco$^{4,5}$,
+Željko Ivezić$^{6}$,
+Claudia M. Raiteri$^{7}$,
+Andrea Possenti$^{8}$,
+John R. Peterson$^{9}$,
+Colin J. Burke$^{10}$,
+Robert D. Blum$^{11}$,
+George H. Jacoby$^{12}$,
+Steve B. Howell$^{13}$,
+Grzegorz Madejski$^{2}$,
+\textit{with the support of the LSST Transients and Variable Stars Collaboration
+}}}
 \date{November 2018}
 
 \begin{document}
@@ -24,7 +51,8 @@ The operational component of the strategy requires LSST to take star trail image
 \end{abstract}
 
 \section{White Paper Information}
-The corresponding author is David Thomas (dthomas5@stanford.edu). This work was developed partly within the Transients and Variable Stars Science Collaboration (TVS) and the author acknowledges the support of TVS in the preparation of this paper.
+% The corresponding author is David Thomas (dthomas5@stanford.edu). 
+% This work was developed partly within the Transients and Variable Stars Science Collaboration (TVS) and the author acknowledges the support of TVS in the preparation of this paper.
 
 \begin{enumerate} 
 \item {\bf Science Category:} We introduce a mechanism that enables the LSST to provide new data with higher time resolution that not only enhances existing investigations, but allows LSST to contribute to new science use cases that generally lie within the categories: \textit{Exploring the Transient Optical Sky}, \textit{Mapping the Milky Way}, and \textit{Taking an Inventory of the Solar System}.
@@ -235,6 +263,34 @@ The primary goal of this white paper is to bring star trail imaging and its pote
 
 We submitted a proposal for imaging four Kepler K2 fields with star trails with the Dark Energy Camera in the 2019A NOAO observing period. We aim to measure how various stellar variability detection methods, including deep neural networks, translate to real data. We will take this opportunity to gain experience programmatically operating telescopes to induce star trails. Star trail images will also be taken during the LSST commissioning, which will provide further experience and science opportunities.
 
+\section{Acknowledgment}
+\label{sec:ack}
+This work was developed within the LSST Transients and Variable Stars Science Collaboration (TVS) and the authors acknowledge the support of TVS in the preparation of this paper.
+
+\section{References}
+
+\begingroup
+\renewcommand{\section}[2]{}%
 \bibliographystyle{aasjournal}
 \bibliography{references}
+\endgroup
+
+\section*{Author Affiliations}
+\parbox{\textwidth}{
+\footnotesize
+$^{1}$ Institute for Computational and Mathematical Engineering, Stanford University, Stanford, CA, USA\\
+$^{2}$ Kavli Institute for Particle Astrophysics and Cosmology, Stanford University, Stanford, CA, USA\\
+$^{3}$ Department of Physics, Stanford University, Stanford, CA 94305, USA\\
+$^{4}$ CCPP, New York University, New York, NY 10003, USA\\
+$^{5}$ Center for Urban Science and Progress, New York University, Brooklyn, NY 11201, USA\\
+$^{6}$ Department of Astronomy, University of Washington, Seattle, WA 98195-1580, USA\\
+$^{7}$ INAF – Osservatorio Astrofisico di Torino, via Osservatorio 20, I-10025, Pino Torinese, Italy\\
+$^{8}$ INAF – Osservatorio Astronomico di Cagliari, Loc. Poggio dei Pini, I-09012, Capoterra, Italy\\
+$^{9}$ Department of Physics and Astronomy, Purdue University, West Lafayette, IN 47907, USA\\
+$^{10}$ Department of Astronomy, University of Illinois at Urbana-Champaign, Urbana, IL 61801, USA\\
+$^{11}$ National Optical Astronomy Observatory, 950 North Cherry
+Ave, Tucson, AZ 85719, USA\\
+$^{12}$ Lowell Observatory, Flagstaff, AZ 86001, USA\\
+$^{13}$ NASA Ames Research Center, Mountain View, CA, USA\\
+}
 \end{document}
